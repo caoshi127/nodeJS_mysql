@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		td {
+			width: 100px;
+			text-align: center;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="js/util.js"></script>
+</head>
+<body>
+	
+	<button id="testBtn" style="margin-top: 20px">点击获取数据表格</button>
+
+	<table cellspacing="0" cellpadding="0" border="1" style="margin-top: 20px">
+		<thead>
+			<tr>
+				<td>ID</td>
+				<td>姓名</td>
+				<td>年龄</td>
+				<td>地址</td>
+				<td>生日</td>
+				<!-- <td>操作</td> -->
+			</tr>
+		</thead>
+		
+		<tbody id="userTable">
+
+		</tbody>
+	</table>
+</body>
+
+<script type="text/javascript">
+	     
+
+	$('#testBtn').on('click', function() {
+		$.ajax({
+			type: 'get',
+			url: 'http://localhost:3000/info',
+			success: function(data) {
+				// console.log(data.data[0].name);
+				var userArr = data.data;
+				console.log(userArr);
+				var tableHtml = "";
+			
+				userArr.forEach(function(value, index) {
+					tableHtml += "<tr>";
+					tableHtml += "<td>" + value.id + "</td>";
+					tableHtml += "<td>" + value.name + "</td>";
+					tableHtml += "<td>" + value.age + "</td>";
+					tableHtml += "<td>" + value.address + "</td>";
+					tableHtml += "<td>" + new Date(value.birthday).format('yyyy-MM-dd') + "</td>";
+					tableHtml += "</tr>";
+				});
+				// 插入数据
+				$('#userTable').html(tableHtml);
+			},
+			error: function() {
+				console.log('get data error');
+			}
+		});
+
+
+	});
+
+
+</script>
+
+</html>
